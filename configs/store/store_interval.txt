@@ -1,0 +1,20 @@
+"Interval"
+{
+	"interval_amount"	"5"		// How much player will earn without perk
+	"interval_lenght"		"60"	// How long every second that player will earn credits
+	
+	"enable_steam"		"1"
+	"SteamGroupID" 		""							// Steam Group ID
+	"SteamGroupMulti"	"1.2"						// Multiple Extra Credits for being in Steam Group
+	"SteamGroupDesc"	"Member in Steam Group" 	// Description for Extra Credits
+	
+	"enable_clantag"	"0"
+	"ClanTag"			""		// Clan Tag
+	"ClanTagMulti"		"1.0"	// Multiple Extra Credits for using ClanTag\
+	"ClanTagDesc"		"Using ClanTag"
+	
+	"enable_vip"		"1"
+	"VIPFlags"			""
+	"VIPMulti"			"1.5"
+	"VIPDesc"				"VIP Perk"
+}
