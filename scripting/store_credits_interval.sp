@@ -222,6 +222,7 @@ public void SendAllCredits()
 				iTotalEarn += (g_Config.iInterval_amount * g_Config.fVIPMulti) - g_Config.iInterval_amount;
 			
 			Store_SetClientCredits(i, iCredits + iTotalEarn);
+			PrintEarningMessage(i, iCredits + iTotalEarn, g_ClientStatus[i].bHasSteam, g_ClientStatus[i].bHasClanTag, g_ClientStatus[i].bHasVIP);
 		}
 	}
 }
@@ -229,7 +230,7 @@ public void SendAllCredits()
 public Action Give_ClientCredits(Handle timer, any client)
 {
 	if(!IsClientInGame(client))
-		return Plugin_Handled;
+		return Plugin_Stop;
 		
 	else
 	{
@@ -258,6 +259,51 @@ public void SendClientCredits(int client)
 			iTotalEarn += (g_Config.iInterval_amount * g_Config.fVIPMulti) - g_Config.iInterval_amount;
 			
 		Store_SetClientCredits(client, iCredits + iTotalEarn);
+		PrintEarningMessage(client, iCredits + iTotalEarn, g_ClientStatus[client].bHasSteam, g_ClientStatus[client].bHasClanTag, g_ClientStatus[client].bHasVIP);
+	}
+}
+
+public void PrintEarningMessage(int client, int credits, bool hasSteam, bool hasTag, bool hasVIP)
+{
+	char g_sMessage[256];
+	
+	if(credits == 0)
+		return;
+		
+	if(client == 0 || !IsClientInGame(client))
+		return;
+		
+	if(!hasSteam && !hasTag && !hasVIP)
+		CPrintToChat(client, "%s You have earned {lightgreen}%d{default} credits.", g_sPrefix, credits);
+	
+	else
+	{
+		int iPerk = 0;
+		Format(g_sMessage, sizeof(g_sMessage), "(Extra: ");
+		
+		if(hasSteam)
+		{
+			iPerk++;
+			StrCat(g_sMessage, sizeof(g_sMessage), g_Config.sSteamGroupDesc);
+		}
+		if(hasTag)
+		{
+			iPerk++;
+			if(iPerk > 1)
+				StrCat(g_sMessage, sizeof(g_sMessage), ", ");
+				
+			StrCat(g_sMessage, sizeof(g_sMessage), g_Config.sClanTagDesc);
+		}
+		if(hasVIP)
+		{
+			iPerk++;
+			if(iPerk > 1)
+				StrCat(g_sMessage, sizeof(g_sMessage), ", ");
+				
+			StrCat(g_sMessage, sizeof(g_sMessage), g_Config.sVIPDesc);
+		}
+		StrCat(g_sMessage, sizeof(g_sMessage), ")");
+		CPrintToChat(client, "%s You have earned {lightgreen}%d{default} credits. %s", g_sPrefix, credits, g_sMessage);
 	}
 }
 
